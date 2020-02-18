@@ -1,0 +1,13 @@
+extends layout 
+
+block content 
+    h1 = title 
+    ul
+        each customer in customers //jade 的模板遍历方式
+            li 
+                span #{customer.customername}
+                span #{customer.prefername}
+                span #{customer.email}
+                span #{customer.phone}
+                span #{customer.idnum}
+                

@@ -3,23 +3,21 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+var mongoose = require("mongoose");
 
-var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
-
-var ejs = require("ejs"); //引入ejs模块
-
-var goodsRouter = require("./routes/goods");
+var indexRouter = require("./src/routes/index");
+var usersRouter = require("./src/routes/users");
+var customerRouter = require("./src/routes/customer");
 
 var app = express();
+
+//create a database link
+mongoose.connect("mongodb://localhost/myDB");
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
-app.engine(".html", ejs.__express);
-app.set("view engine", "html");
 
-app.use("/goods", goodsRouter);
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -28,6 +26,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+app.use("/customers", customerRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -45,4 +44,4 @@ app.use(function(err, req, res, next) {
   res.render("error");
 });
 
-app.listen(3001);
+module.exports = app;
